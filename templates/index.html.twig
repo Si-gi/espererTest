@@ -21,14 +21,14 @@
     </tr>
   </thead>
   <tbody>
-  {% for personne in personnes %}
-    <tr id="{{personne.id}}">
-      <th scope="row">{{personne.id}}</th>
-      <td>{{personne.name}}</td>
-      <td>{{personne.firstname}}</td>
-      <td>{{personne.familySituation}}</td>
-      <td>{{personne.dateOfBirth|date('d-m-y')}}</td>
-      <td onclick="del(this, {{personne.id}})">delete</td>
+  {% for people in peoples %}
+    <tr id="{{people.id}}">
+      <th scope="row">{{people.id}}</th>
+      <td>{{people.name}}</td>
+      <td>{{people.firstname}}</td>
+      <td>{{people.familySituation}}</td>
+      <td>{{people.dateOfBirth|date('d-m-y')}}</td>
+      <td onclick="del(this, {{people.id}})">delete</td>
     </tr>
     {%endfor%}
   </tbody>

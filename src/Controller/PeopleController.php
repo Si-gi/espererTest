@@ -10,26 +10,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use App\Entity\Personne;
-use App\Form\Type\PersonneType;
-class PersonneController extends AbstractController
+use App\Entity\People;
+use App\Form\Type\PeopleType;
+class PeopleController extends AbstractController
 {
     /** @var EntityManagerInterface */
     private $entityManager;
     /** @var \Doctrine\Common\Persistence\ObjectRepository */
-    private $personneRepository;
+    private $peopleRepository;
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->personneRepository = $entityManager->getRepository(Personne::class);
+        $this->peopleRepository = $entityManager->getRepository(People::class);
     }
     /**
-     * @Route("/", name="personne")
+     * @Route("/", name="People")
      */
     public function index(): Response
     {
-        $personnes = $this->personneRepository->getAllPersonn();//findAll();
-        return $this->render('/index.html.twig', [ "personnes" => $personnes
+        $peoples = $this->peopleRepository->getAllPersonn();//findAll();
+        return $this->render('/index.html.twig', [ "peoples" => $peoples
         ]);
     }
 
@@ -43,24 +43,24 @@ class PersonneController extends AbstractController
 
     public function addPersonnForm(Request $request)
     {
-        $personne = new Personne();
-        $form = $this->createForm(PersonneType::class, $personne);
+        $people = new People();
+        $form = $this->createForm(PeopleType::class, $people);
         $form->handleRequest($request);
 
         // Check is valid
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($personne->getFamilySituation() !== "Homme seul" && $personne->getFamilySituation() !== "Femme seul" &&
-            $personne->getFamilySituation() !== "Couple sans enfant" && $personne->getFamilySituation() !== "Couple avec enfant"  ) {
+            if ($people->getFamilySituation() !== "Homme seul" && $people->getFamilySituation() !== "Femme seul" &&
+            $people->getFamilySituation() !== "Couple sans enfant" && $people->getFamilySituation() !== "Couple avec enfant"  ) {
                 return $this->redirectToRoute('add');
             }
 
-            $this->entityManager->persist($personne);
+            $this->entityManager->persist($people);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('personne');
+            return $this->redirectToRoute('People');
         }
 
-        return $this->render('personne/index.html.twig', [
+        return $this->render('people/index.html.twig', [
             'form' => $form->createView()
         ]);
     }
@@ -69,15 +69,12 @@ class PersonneController extends AbstractController
      * @Route("/delPeople/", name="delPeople")
      * @param Request $request
      */
-    public function delPersonne(Request $request) {
+    public function delPeople(Request $request) {
         if ($request->isXmlHttpRequest() || $request->request->get("id") == 1) {
-
-
-
-            $personne = $this->personneRepository->findOneById($request->request->get("id"));
-            if ($personne !== null) {
+            $people = $this->peopleRepository->findOneById($request->request->get("id"));
+            if ($people !== null) {
                 
-                $this->entityManager->remove($personne);
+                $this->entityManager->remove($people);
                 $this->entityManager->flush();
         
                 return new JsonResponse(array("success" => true)); 
