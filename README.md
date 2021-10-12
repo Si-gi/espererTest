@@ -4,6 +4,7 @@ Prérequis:
   - composer v2.0 ou plus
   - Symfony cli(https://symfony.com/download)
   - configurer le fichier .env pour l'accès à la base de donnée
+  
 Pour lancer l'application, dans un terminal à la racine du projet:
   - composer update
   - composer install
