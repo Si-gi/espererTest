@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>List ! ✅</h1>
+
+    <table class="table" id="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">firstName</th>
+      <th scope="col"> Family Situation </th>
+      <th scope="col">birth date</th>
+      <th scope ="col"> Delete </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for personne in personnes %}
+    <tr id="{{personne.id}}">
+      <th scope="row">{{personne.id}}</th>
+      <td>{{personne.name}}</td>
+      <td>{{personne.firstname}}</td>
+      <td>{{personne.familySituation}}</td>
+      <td>{{personne.dateOfBirth|date('d-m-y')}}</td>
+      <td onclick="del(this, {{personne.id}})">delete</td>
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
+</div>
+
+<script>
+
+function del(row, id) {
+
+
+              $.ajax({
+                url:'/delPeople/',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id": id
+                },
+                async: true,
+                success: function (data)
+                {
+                  console.log("test");
+                  if (data["success"] == true) {
+                    document.getElementById("table").deleteRow(row.closest('tr').rowIndex);
+                  }
+
+                }
+            });
+  /*const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+    }
+  };
+  xhttp.open("POST", "/delPeople/", true);
+  xhttp.setRequestHeader("Accept", "application/json");
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest') ;
+  let data = "id="+id;
+  console.log(data);
+  xhttp.onload = function () {
+    // do something to response
+    console.log("test");
+      if (true) {
+        document.getElementById("table").deleteRow(row.closest('tr').rowIndex);
+      }
+};
+
+  xhttp.send(data);
+*/
+  
+}
+
+
+</script>
+{% endblock %}
